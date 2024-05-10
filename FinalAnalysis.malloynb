@@ -1,0 +1,75 @@
+>>>malloy
+import "f1s.malloy"
+>>>markdown
+# The Formula 1 expansion to United States
+
+>>>markdown
+[First race in Formula 1]
+>>>malloy
+run: races -> {
+    select: `date`, raceId, circuits.location 
+    order_by: `date` 
+}
+>>>markdown
+[Historical Race Data]
+>>>malloy
+run: races -> {
+    group_by: name
+    aggregate: num_races is count(`date`)
+}
+>>>malloy
+run: races -> {
+    group_by: circuits.country
+    aggregate: occurrances is count(`date`)
+}
+>>>malloy
+run: races -> {
+    group_by: circuits.country
+    --aggregate: number_circuits is count(circuits.circuitId)
+    nest: Circuits is {
+        group_by: name
+        aggregate: occurances is count(`date`)
+    }
+}
+>>>markdown
+[total drivers by country]
+>>>malloy
+run: drivers -> {
+    group_by: nationality
+    aggregate: num is count(driverId)
+    -- nest: driv is {
+       -- select: surname
+    --}
+}
+>>>markdown
+[total winners by country]
+>>>malloy
+run: drivers -> {
+    group_by: nationality
+    aggregate: total_wins is count(driver_standings.wins)
+}
+>>>markdown
+[All drivers and World Champions]
+>>>malloy
+run: results -> {
+    group_by: driverId
+    aggregate: total_points is sum(points)
+}
+>>>markdown
+[year races avg by country]
+>>>malloy
+run: races -> {
+    group_by: `year`
+    aggregate: num_races is count(circuitId)
+    nest: by_country is {
+        group_by: circuits.country
+        nest: by_city is{
+            group_by: circuits.location
+        }
+    }
+    order_by: `year` desc
+}
+>>>malloy
+run: races -> {
+    
+}

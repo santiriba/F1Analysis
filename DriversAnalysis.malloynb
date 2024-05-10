@@ -1,0 +1,172 @@
+>>>malloy
+import "f1s.malloy"
+>>>markdown
+# F1 Data Analysis and Forecast
+
+Question: Is Formula 1 becoming a very profitable and popular sport in the United States? 
+
+Question: How have American tech companies’ contracts and sponsorships with Formula 1 teams and circuits evolved over the past decade, and what impact has this close relationship had on technological advancements within the sport?
+
+1. Focus: The research question centers on the relationship between American tech companies and Formula 1.
+2. Specificity: It specifically addresses contracts, sponsorships, and their evolution over the last 10 years.
+3. Relevance: The question highlights the impact of this relationship on technological breakthroughs in F1.
+4. Audience: It aligns with your intended audience—people from the tech industry and Formula 1 fans.
+
+# The Formula 1 expansion to United States
+
+Question: What are some clear examples from the last decade of Formula 1 moving towards the United States?
+Question2.0: What is some clear evidence from the last decade that the Formula 1 sport is entering the United States Market and its here to stay?
+>>>markdown
+It is no surprise that after the Netflix tv show "Drive to Srurvive" the sport has gained lots of popularity. 
+Just in the United States, 
+A Morning Consult survey from 2022 found 28% of U.S. adults consider themselves fans of F1 racing — more than half of them cited Drive to Survive for their interest in the sport.
+https://www.forbes.com/sites/bradadgate/2024/03/11/heres-why-formula-1-racing-is-growing-in-popularity-with-women/?sh=7270b721137c 
+>>>markdown
+Formula 1 is a sport that started on (date), (location). Predomanetley a very popular sport in Europe and Asia. 
+
+[most races by country]
+>>>malloy
+# bar_chart
+run: races -> {
+    group_by: circuits.country
+    aggregate: occurrances is count(`date`)
+}
+>>>markdown
+It has been dominated not only by European viewers/fans but also by drivers.
+
+[total drivers by country]
+>>>malloy
+run: drivers -> {
+    group_by: nationality
+    aggregate: num is count(driverId)
+    -- nest: driv is {
+       -- select: surname
+    --}
+}
+>>>markdown
+[total race winners by country]
+>>>malloy
+# bar_chart
+run: drivers -> {
+    group_by: nationality
+    aggregate: total_wins is count(driver_standings.wins)
+}
+>>>markdown
+[American race winners]
+>>>malloy
+-- American race winners
+run: drivers -> {
+    group_by: surname, nationality, dob
+    aggregate: num_win is count(driver_standings.wins)
+    where: nationality = 'American'
+    order_by: num_win desc
+}
+>>>markdown
+In the recent years, formula 1 has made some serious attempts to enter the North American/United States market.
+
+[recent races in United States]
+>>>malloy
+run: races -> {
+    select: name, circuits.country, `date`
+    where: circuits.country = 'United States' or circuits.country = 'USA'
+    where: `year` > 2013
+    order_by: `date` desc
+}
+>>>markdown
+Logan Sargent, amerian driver.
+Born in Florida, another attempt to gain popularity with the u.s. fans.
+
+[all current drivers, nationality, date of birth]
+>>>malloy
+run: drivers -> {
+    select: `number`, surname, nationality, dob
+    where: driverId = 830
+    or driverId = 815
+    or driverId = 1
+    or driverId = 4
+    or driverId = 844
+    or driverId = 846
+    or driverId = 832
+    or driverId = 847
+    or driverId = 857
+    or driverId = 840
+    or driverId = 842
+    or driverId = 839
+    or driverId = 848
+    or driverId = 852
+    or driverId = 822
+    or driverId = 807
+    or driverId = 817
+    or driverId = 855
+    or driverId = 825
+    or driverId = 858
+}
+>>>markdown
+[all current teams]
+>>>malloy
+run: constructors -> {
+    select: name, nationality
+    where: name = 'Red Bull'
+    or name = 'Ferrari'
+    or name = 'Mercedes'
+    or name = 'McLaren'
+    or name = 'Aston Martin'
+    or name = 'Alpine F1 Team'
+    or name = 'Williams'
+    or name = 'AlphaTauri'
+    or name = 'Alfa Romeo'
+    or name = 'Haas F1 Team'
+}
+>>>markdown
+[All world Champions by Country]
+>>>malloy
+run: driver_standings -> {
+    select: *
+}
+>>>markdown
+Results:
+The recent attempts to enter this market has given results. One example we can see are American companies recent team sponsorships such as:
+
+⁃ Hp / Ferrari
+⁃ Google / McLaren
+⁃ Oracle / Red Bull
+⁃ TeamViewer / Mercedes
+⁃ Visa cash app team
+⁃ Sauber?
+>>>markdown
+These are million dollar investements the European teams have gained thanks to the expansion of the sport to the U.S. market.
+https://theathletic.com/5471843/2024/05/05/f1-miami-gp-american-business-boom/ 
+>>>markdown
+Famous Americans seen on the F1 Miami Grand Prix 2024:
+1. Tom Brady (football quarterback)
+2. Kendall Jenner (model)
+3. Tommy Hilfiger (fashion designer)
+4. Fred Kerley (track and field athlete)
+5. Jimmy Butler (basketball player)
+6. Odell Beckham Jr. (football wide receiver)
+7. Lindsey Vonn (alpine ski racer)
+8. Patrick Mahomes (football quarterback)
+9. Donald Trump (45th U.S. President)
+>>>markdown
+This tells us:
+⁃ American companies in the tech industry are making high investements in the Formula 1 sport.
+⁃ Would this mean more circuits in the United States for the coming years?
+⁃
+⁃ High correlation between tech industries and formula 1
+⁃ Engendering and tech
+⁃
+
+
+
+
+
+World of tech, we usually think about:
+⁃ big tech companies
+⁃ Software
+⁃ Cyber security
+⁃ Crypto
+⁃ Data Science
+⁃ Engineering
+⁃ Ai?
+⁃ Block chain?
+⁃

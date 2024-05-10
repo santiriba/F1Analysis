@@ -1,0 +1,95 @@
+>>>markdown
+# Formula 1 Data set Analysis
+Formula 1 races have historically been predominately an european motor sport. But on recent years the sport has been gaing lots of popularily in other countries. 
+The sport is interested in reaching a higher audience and is currently targeting the U.S. market who has lots of potential having the Super Bowl (the major sports event in the U.S.) as a reference. 
+
+Question: What are some clear attempts the Formula 1 sport has made to enter the U.S. market?
+>>>markdown
+# F1 
+
+Formula 1 is the highest motor sport international competition. 
+>>>malloy
+import "f1s.malloy"
+>>>malloy
+run: circuits -> {
+    select: name, location, country
+}
+>>>malloy
+run: races -> {
+    select: circuitId, name, `date`, `year`
+    where: `year` > 2019
+    order_by: circuitId, `year`
+}
+>>>markdown
+All races (ever)
+>>>malloy
+# bar_chart
+run: races -> {
+    group_by: name
+    aggregate: num_races is count(`date`)
+}
+>>>markdown
+All races of the last 5 years
+>>>malloy
+run: races -> {
+    group_by: name
+    aggregate: num_races is count(`date`)
+    where: `year` > 2018
+}
+>>>malloy
+run: circuits -> {
+    select: name, location, country
+    where: country = 'USA'
+}
+>>>malloy
+run: races -> {
+    select: name, circuits.country, `date`
+    where: circuits.country = 'United States' or circuits.country = 'USA'
+    order_by: `date` desc
+}
+>>>malloy
+run: races -> {
+    select: name, circuits.country, `date`
+    -- where: circuits.country = "USA"
+    order_by: `date` desc
+}
+>>>malloy
+run: races -> {
+    select: name, circuits.country
+}
+>>>markdown
+[total num of circuits]
+>>>malloy
+run: circuits -> {
+    aggregate: total_circuits is count(circuitId)
+}
+>>>malloy
+run: circuits -> {
+    group_by: country
+    aggregate: num_circuits is count(circuitId)
+    where: country != 'USA', 
+    country != 'Japan', 
+    country != 'South Africa', 
+    country != 'Malaysia', 
+    country != 'Brazil',
+    country != 'Bahrain',
+    country != 'Turkey',
+    country != 'China',
+    country != 'Mexico',
+    country != 'Singapore',
+    country != 'Canada',
+    country != 'United States',
+    country != 'UAE',
+    country != 'Argentina',
+    country != 'Korea',
+    country != 'Morocco',
+    country != 'Australia',
+    country != 'India',
+    country != 'Russia',
+    country != 'Saudi Arabia',
+    country != 'Qatar',
+    country != 'Azerbaijan'
+    --nest: circuit_name is {
+        --group_by: circuitRef
+    --}
+}

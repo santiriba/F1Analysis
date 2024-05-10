@@ -1,0 +1,43 @@
+source: circuits is duckdb.table('circuits.csv') extend {
+    primary_key: circuitId
+}
+source: constructors is duckdb.table('constructors.csv') extend {
+    primary_key: constructorId
+}
+source: constructor_results is duckdb.table('constructor_results.csv')
+source: constructor_standings is duckdb.table('constructor_standings.csv')
+source: driver_standings is duckdb.table('driver_standings.csv') extend {
+    --join_one: drivers with driverId
+    primary_key: driverId
+}
+source: drivers is duckdb.table('drivers.csv') extend {
+    join_one: driver_standings with driverId
+}
+source: races is duckdb.table('races.csv') extend {
+    primary_key: raceId
+    join_one: circuits with circuitId
+}
+source: lap_times is duckdb.table('lap_times.csv') extend {
+    join_one: driver_standings with driverId
+    join_one: races with raceId
+}
+source: pit_stops is duckdb.table('pit_stops.csv') extend {
+    join_one: driver_standings with driverId
+    join_one: races with raceId
+}
+source: qualifying is duckdb.table('qualifying.csv') extend {
+    join_one: constructors with constructorId
+    join_one: driver_standings with driverId
+    join_one: races with raceId
+}
+source: results is duckdb.table('results.csv') extend {
+    join_one: constructors with constructorId
+    join_one: driver_standings with driverId
+}
+source: seasons is duckdb.table('seasons.csv')
+source: sprint_results is duckdb.table('sprint_results.csv') extend {
+    join_one: constructors with constructorId
+    join_one: driver_standings with driverId
+    join_one: races with raceId
+}
+source: status is duckdb.table('status.csv')
